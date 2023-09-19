@@ -1,1 +1,218 @@
-[{"type":"constructor","stateMutability":"undefined","payable":false,"inputs":[{"type":"address","name":"vrfCordinatorAddress"},{"type":"bytes32","name":"_keyhash"},{"type":"uint32","name":"subID"},{"type":"uint32","name":"_callbackgaslimit"}]},{"type":"error","name":"Lottery_Active","inputs":[{"type":"string","name":"msg"}]},{"type":"error","name":"Lottery_NotActive","inputs":[{"type":"string","name":"msg"}]},{"type":"error","name":"Lottery__EntranceFees","inputs":[{"type":"string","name":"msg"}]},{"type":"error","name":"Lottery__FaildToTransfer","inputs":[{"type":"string","name":"msg"}]},{"type":"error","name":"Lottery__NotEnoughPlayers","inputs":[]},{"type":"error","name":"OnlyCoordinatorCanFulfill","inputs":[{"type":"address","name":"have"},{"type":"address","name":"want"}]},{"type":"event","anonymous":false,"name":"OwnershipTransferred","inputs":[{"type":"address","name":"previousOwner","indexed":true},{"type":"address","name":"newOwner","indexed":true}]},{"type":"event","anonymous":false,"name":"RequestFulfilled","inputs":[{"type":"uint256","name":"requestId","indexed":true},{"type":"uint256[]","name":"randomWords"}]},{"type":"event","anonymous":false,"name":"RequestSent","inputs":[{"type":"uint256","name":"requestId","indexed":true},{"type":"uint32","name":"numWords","indexed":true}]},{"type":"event","anonymous":false,"name":"WinnerSelected","inputs":[{"type":"address","name":"winner","indexed":true}]},{"type":"function","name":"enter","constant":false,"stateMutability":"payable","payable":true,"inputs":[],"outputs":[]},{"type":"function","name":"getEntraceFee","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"uint256","name":""}]},{"type":"function","name":"getLatestWinner","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address","name":""}]},{"type":"function","name":"getOwner","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address","name":""}]},{"type":"function","name":"getState","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"uint8","name":""}]},{"type":"function","name":"getarr","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"uint256","name":""}]},{"type":"function","name":"i_prev_winners","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"uint256","name":""}],"outputs":[{"type":"address","name":""}]},{"type":"function","name":"i_time_interval","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"uint256","name":""}]},{"type":"function","name":"isActive","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"uint8","name":""}]},{"type":"function","name":"owner","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address","name":""}]},{"type":"function","name":"pickWinner","constant":false,"payable":false,"inputs":[],"outputs":[]},{"type":"function","name":"rawFulfillRandomWords","constant":false,"payable":false,"inputs":[{"type":"uint256","name":"requestId"},{"type":"uint256[]","name":"randomWords"}],"outputs":[]},{"type":"function","name":"renounceOwnership","constant":false,"payable":false,"inputs":[],"outputs":[]},{"type":"function","name":"s_enties","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"uint256","name":""}],"outputs":[{"type":"address","name":""}]},{"type":"function","name":"s_randomWord","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"uint256","name":""}]},{"type":"function","name":"transferOwnership","constant":false,"payable":false,"inputs":[{"type":"address","name":"newOwner"}],"outputs":[]}]
+[
+  {
+    "type": "constructor",
+    "stateMutability": "undefined",
+    "payable": false,
+    "inputs": [
+      { "type": "address", "name": "vrfCordinatorAddress" },
+      { "type": "bytes32", "name": "_keyhash" },
+      { "type": "uint32", "name": "subID" },
+      { "type": "uint32", "name": "_callbackgaslimit" }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "Lottery_Active",
+    "inputs": [{ "type": "string", "name": "msg" }]
+  },
+  {
+    "type": "error",
+    "name": "Lottery_NotActive",
+    "inputs": [{ "type": "string", "name": "msg" }]
+  },
+  {
+    "type": "error",
+    "name": "Lottery__EntranceFees",
+    "inputs": [{ "type": "string", "name": "msg" }]
+  },
+  {
+    "type": "error",
+    "name": "Lottery__FaildToTransfer",
+    "inputs": [{ "type": "string", "name": "msg" }]
+  },
+  { "type": "error", "name": "Lottery__NotEnoughPlayers", "inputs": [] },
+  {
+    "type": "error",
+    "name": "OnlyCoordinatorCanFulfill",
+    "inputs": [
+      { "type": "address", "name": "have" },
+      { "type": "address", "name": "want" }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OwnershipTransferred",
+    "inputs": [
+      { "type": "address", "name": "previousOwner", "indexed": true },
+      { "type": "address", "name": "newOwner", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "RequestFulfilled",
+    "inputs": [
+      { "type": "uint256", "name": "requestId", "indexed": true },
+      { "type": "uint256[]", "name": "randomWords" }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "RequestSent",
+    "inputs": [
+      { "type": "uint256", "name": "requestId", "indexed": true },
+      { "type": "uint32", "name": "numWords", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "WinnerSelected",
+    "inputs": [{ "type": "address", "name": "winner", "indexed": true }]
+  },
+  {
+    "type": "function",
+    "name": "enter",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getEntraceFee",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "uint256", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "getLatestWinner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "address", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "getOwner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "address", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "getState",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "uint8", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "getarr",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "uint256", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "i_prev_winners",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [{ "type": "uint256", "name": "" }],
+    "outputs": [{ "type": "address", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "i_time_interval",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "uint256", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "isActive",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "uint8", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "address", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "pickWinner",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "rawFulfillRandomWords",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      { "type": "uint256", "name": "requestId" },
+      { "type": "uint256[]", "name": "randomWords" }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "renounceOwnership",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "s_enties",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [{ "type": "uint256", "name": "" }],
+    "outputs": [{ "type": "address", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "s_randomWord",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [{ "type": "uint256", "name": "" }]
+  },
+  {
+    "type": "function",
+    "name": "transferOwnership",
+    "constant": false,
+    "payable": false,
+    "inputs": [{ "type": "address", "name": "newOwner" }],
+    "outputs": []
+  }
+]

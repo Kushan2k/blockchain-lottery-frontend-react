@@ -12,10 +12,12 @@ export default function LotteryEnter() {
 
   const {chainId}=useMoralis()
   const [entraceFee, setFee] = useState('0')
+  const [state, setState] = useState('0')
+  const [winner,setwinner]=useState(null)
 
   const Caddress = parseInt(chainId) in address ? address[parseInt(chainId)][0] : null
   
-  const {runContractFunction:EnterLottry} = useWeb3Contract(
+  const {runContractFunction:EnterLottry,isFetching} = useWeb3Contract(
     {
       abi: abi,
       contractAddress: Caddress,
@@ -33,9 +35,31 @@ export default function LotteryEnter() {
       
     }
   )
+  const { runContractFunction:getState } = useWeb3Contract(
+    {
+      abi: abi,
+      contractAddress: Caddress,
+      params: {},
+      functionName: 'getLatestWinner',
+      
+    }
+  )
+  const { runContractFunction:getPrevWinner } = useWeb3Contract(
+    {
+      abi: abi,
+      contractAddress: Caddress,
+      params: {},
+      functionName: 'getState',
+      
+    }
+  )
   async function d() {
-      const fee = await getEntraceFee()
-      setFee(fee.toString())
+    const fee = await getEntraceFee()
+    const st = await getState()
+    const w=await getPrevWinner()
+    setFee(fee.toString())
+    setState(st.toString())
+    setwinner(w && w)
     
   }
   
@@ -85,39 +109,51 @@ export default function LotteryEnter() {
                   Entrace Fee: {parseInt(entraceFee) / 1e18} 
                   ETH
                 </p>
-                <Button
-                  onClick={async function () {
-                    await EnterLottry(
-                      {
-                        onSuccess: () => {
-                          dispatch({
-                            position: 'topR',
-                            type: 'success',
-                            title: 'Entry Marked',
-                            message:"your entry has been marked!"
-                          })
-                            
-                        },
-                        onError: (er) => {
-                          console.log(er)
-                          dispatch({
-                            position: 'topR',
-                            type: 'error',
-                            title: "error",
-                            message:er.message
-                          })
-                        },
+                <p>Previous Winners is: { winner} </p>
+                {
+                  state === '0' ? (
+                    <p className="text-success" style={{fontSize:'2rem'}}>Lottery is Open</p>
+                  ) : (
+                      <p className="text-danger" style={{fontSize:'2rem'}}>Lottery is Closed for entry</p>
+                  )
+                }
+                {
+                  state === '0' && (
+                    <Button
+                      onClick={async function () {
+                        await EnterLottry(
+                          {
+                            onSuccess: async (tx) => {
+                              await tx.wait(1)
+                              dispatch({
+                                position: 'topR',
+                                type: 'success',
+                                title: 'Entry Marked',
+                                message: "your entry has been marked!"
+                              })
+                                
+                            },
+                            onError: (er) => {
+                              console.log(er)
+                              dispatch({
+                                position: 'topR',
+                                type: 'error',
+                                title: "error",
+                                message: er.message
+                              })
+                            },
 
-                      }
-                    )
-                  }}
-                  text="Mark an Entry"
-                  theme="secondary"
-                  size="large"
-                  
-                />
-                  
-                
+                          }
+                        )
+                      }}
+                      disabled={isFetching}
+                      text={isFetching ? 'Wait for confimation' : "Mark an Entry"}
+                      theme="secondary"
+                      size="large"
+                      
+                    />
+                  )
+                } 
               </>
             ) : (
                 <p className="text-danger display-6 text-center">
