@@ -12,7 +12,6 @@ function App() {
     11155111: "0x669406ff143A2869D3709c888AF6eA15a419c498",
   }
 
-  console.log(account)
   return (
     <div className="App">
       <Navbar />
@@ -25,12 +24,11 @@ function App() {
           </p>
         </div>
       )}
-      {account &&
-      parseInt(chainId) in admins &&
-      admins[parseInt(chainId)] === account.toString()
-        ? console.log("admin")
-        : // <Dashboard />
-          console.log("not admin")}
+      {isWeb3Enabled &&
+        parseInt(chainId) in admins &&
+        account.includes(admins[parseInt(chainId)].slice(0, 10)) && (
+          <Dashboard />
+        )}
     </div>
   )
 }

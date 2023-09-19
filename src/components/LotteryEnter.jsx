@@ -13,15 +13,15 @@ export default function LotteryEnter() {
   const {chainId}=useMoralis()
   const [entraceFee, setFee] = useState('0')
   const [state, setState] = useState('0')
-  const [winner,setwinner]=useState(null)
+  
 
   const Caddress = parseInt(chainId) in address ? address[parseInt(chainId)][0] : null
   
-  const {runContractFunction:EnterLottry,isFetching} = useWeb3Contract(
+  const {runContractFunction:EnterLottry,isFetching,data} = useWeb3Contract(
     {
       abi: abi,
       contractAddress: Caddress,
-      params: '',
+      params: {},
       functionName: 'enter',
       msgValue:entraceFee
     }
@@ -40,26 +40,19 @@ export default function LotteryEnter() {
       abi: abi,
       contractAddress: Caddress,
       params: {},
-      functionName: 'getLatestWinner',
-      
-    }
-  )
-  const { runContractFunction:getPrevWinner } = useWeb3Contract(
-    {
-      abi: abi,
-      contractAddress: Caddress,
-      params: {},
       functionName: 'getState',
       
     }
   )
+  
   async function d() {
     const fee = await getEntraceFee()
     const st = await getState()
-    const w=await getPrevWinner()
+    
+    
     setFee(fee.toString())
     setState(st.toString())
-    setwinner(w && w)
+    
     
   }
   
@@ -109,7 +102,7 @@ export default function LotteryEnter() {
                   Entrace Fee: {parseInt(entraceFee) / 1e18} 
                   ETH
                 </p>
-                <p>Previous Winners is: { winner} </p>
+                
                 {
                   state === '0' ? (
                     <p className="text-success" style={{fontSize:'2rem'}}>Lottery is Open</p>
@@ -131,6 +124,7 @@ export default function LotteryEnter() {
                                 title: 'Entry Marked',
                                 message: "your entry has been marked!"
                               })
+                              console.log(data)
                                 
                             },
                             onError: (er) => {
@@ -142,6 +136,7 @@ export default function LotteryEnter() {
                                 message: er.message
                               })
                             },
+                            
 
                           }
                         )

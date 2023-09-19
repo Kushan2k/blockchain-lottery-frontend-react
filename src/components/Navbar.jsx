@@ -1,7 +1,12 @@
 import {ConnectButton} from '@web3uikit/web3'
 
 
+
+
+
 export default function Navbar() {
+
+  
 
   return (
     <div className='container-fluid p-2 d-flex justify-content-center justify-content-md-between' style={{
