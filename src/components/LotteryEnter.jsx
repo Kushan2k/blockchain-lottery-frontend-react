@@ -4,6 +4,7 @@ import address from '../constants/address.json'
 import { useEffect, useState } from "react"
 import { Button, CryptoCards, Hero, Typography, useNotification } from "@web3uikit/core"
 import React from "react"
+import { ethers } from "ethers"
 
 
 export default function LotteryEnter() {
@@ -13,6 +14,7 @@ export default function LotteryEnter() {
   const {chainId}=useMoralis()
   const [entraceFee, setFee] = useState('0')
   const [state, setState] = useState('0')
+  const [lastwinner, setlastWinner] = useState('0')
   
 
   const Caddress = parseInt(chainId) in address ? address[parseInt(chainId)][0] : null
@@ -44,6 +46,17 @@ export default function LotteryEnter() {
       
     }
   )
+  const { runContractFunction:lastWinner } = useWeb3Contract(
+    {
+      abi: abi,
+      contractAddress: Caddress,
+      params: {},
+      functionName: 'getLatestWinner',
+      
+    }
+  )
+
+  const {provider}=useMoralis()
   
   async function d() {
     const fee = await getEntraceFee()
@@ -52,13 +65,30 @@ export default function LotteryEnter() {
     
     setFee(fee.toString())
     setState(st.toString())
+
+    if (parseInt(chainId) === 11155111) {
+      const w = await lastWinner()
+      setlastWinner(w)
+    }
+    
+    const Contract = new ethers.Contract(Caddress, abi, provider)
+    
+    await new Promise(res => {
+      
+      Contract.on("WinnerSelected", () => {
+        console.log('winner picked!')
+        res()
+      })
+    })
     
     
   }
   
   
   useEffect( () => {
-      d()
+    d()
+    
+    
     
     
   },[])
@@ -102,6 +132,7 @@ export default function LotteryEnter() {
                   Entrace Fee: {parseInt(entraceFee) / 1e18} 
                   ETH
                 </p>
+                <p>Last Winner is { lastwinner}</p>
                 
                 {
                   state === '0' ? (
